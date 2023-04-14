@@ -2,6 +2,8 @@ FROM docker/for-desktop-kernel:5.15.49-13422a825f833d125942948cf8a8688cef721ead 
 
 FROM ubuntu:latest
 
+FROM golang:latest
+
 WORKDIR /
 COPY --from=ksrc /kernel-dev.tar /
 RUN tar xf kernel-dev.tar && rm kernel-dev.tar
@@ -23,5 +25,19 @@ RUN apt-get install -y bpftrace
 
 # Build/Install bcc
 
-WORKDIR /root
+#Build/Install golang
+
+RUN apt-get update && apt-get -y install wget vim gcc
+#RUN wget https://studygolang.com/dl/golang/go1.17.1.linux-amd64.tar.gz && \
+#    tar -C /usr/local -xvzf go1.17.1.linux-amd64.tar.gz && \
+#    rm go1.17.1.linux-amd64.tar.gz
+#ENV PATH=$PATH:/usr/local/go/bin
+
+#RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
+
+#RUN apt-get -y install golang
+
+#FROM golang:latest@sha256:729f2ed830b2e1b8df4d6110eaea96acd48650e994522199b4a807d201f16325 as builder
+
+WORKDIR /site/ebpf
 CMD mount -t debugfs debugfs /sys/kernel/debug && /bin/bash
