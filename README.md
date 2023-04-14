@@ -1,5 +1,6 @@
 # eBPF for Docker Desktop on macOS
 
+#copy from https://github.com/singe/ebpf-docker-for-mac
 eBPF and its compiler bcc need access to some parts of the kernel and its headers to work. This image shows how you can do that with Docker Desktop for mac's linuxkit host VM.
 
 ## Build the image

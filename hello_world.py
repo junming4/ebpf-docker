@@ -12,9 +12,11 @@ int hello(void *ctx) {
 """
 
 b = BPF(text=prog)
+
+print_r(b)
 #b.attach_kprobe(event="sys_clone", fn_name="hello")
-b.attach_kprobe(event="__x64_sys_clone", fn_name="hello")
-b.trace_print()
+#b.attach_kprobe(event="__x64_sys_clone", fn_name="hello")
+#b.trace_print()
 
 # This prints out a trace line every time the clone system call is called
 
