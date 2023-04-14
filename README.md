@@ -22,6 +22,19 @@ docker run -it --rm \
   ebpf-for-mac
 ```
 
+```
+docker run -it --rm \
+  --name ebpf-for-mac \
+  --privileged \
+  -v /lib/modules:/lib/modules:ro \
+  -v /etc/localtime:/etc/localtime:ro \
+-v /Users/laraveljun/tools/ebpf-docker/src:/site/ebpf \ 
+  --pid=host \
+  ebpf-for-mac
+```
+
+#/Users/laraveljun/tools/ebpf-docker/src:/site/ebpf 把开发目录渲染到docker目录去
+
 Note: /lib/modules probably doesn't exist on your mac host, so Docker will map the volume in from the linuxkit host VM.
 
 ## Maintenance
