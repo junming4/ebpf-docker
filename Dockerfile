@@ -11,6 +11,7 @@ RUN apt install -y kmod python3-bpfcc
 
 COPY hello_world.py /root
 
+RUN mkdir -p /site/ebpf
 # Use Alibaba Cloud mirror for ubuntu
 #RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
 # Install LLVM 10.0.1
@@ -18,7 +19,7 @@ COPY hello_world.py /root
 #ENV PATH "$PATH:/usr/lib/llvm-10/bin"
 
 # Build/Install bpftrace
-#RUN apt-get install -y bpftrace
+RUN apt-get install -y bpftrace
 
 # Build/Install bcc
 
