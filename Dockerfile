@@ -27,7 +27,7 @@ RUN apt-get install -y bpftrace
 
 #Build/Install golang
 
-RUN apt-get update && apt-get -y install wget vim gcc
+RUN apt-get update && apt-get -y install wget vim gcc clang llvm
 #RUN wget https://studygolang.com/dl/golang/go1.17.1.linux-amd64.tar.gz && \
 #    tar -C /usr/local -xvzf go1.17.1.linux-amd64.tar.gz && \
 #    rm go1.17.1.linux-amd64.tar.gz
@@ -37,7 +37,15 @@ RUN apt-get update && apt-get -y install wget vim gcc
 
 #RUN apt-get -y install golang
 
-#FROM golang:latest@sha256:729f2ed830b2e1b8df4d6110eaea96acd48650e994522199b4a807d201f16325 as builder
+RUN go env
+# go env环境变量设置
+RUN go env -w GOPROXY=https://goproxy.io,direct
+RUN go env -w GOSUMDB=sum.golang.google.cn
+RUN go env -w GO111MODULE=on #有""不用设置
+
+RUN apt-get install -y libelf-dev bpftool
+#RUN git clone https://github.com/libbpf/libbpf.git \
+#    && cd libbpf/src && mkdir build root && BUILD_STATIC_ONLY=y OBJDIR=build DESTDIR=root make install
 
 WORKDIR /site/ebpf
 CMD mount -t debugfs debugfs /sys/kernel/debug && /bin/bash
