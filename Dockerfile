@@ -1,6 +1,6 @@
-FROM docker/for-desktop-kernel:5.15.49-13422a825f833d125942948cf8a8688cef721ead AS ksrc
+FROM docker/for-desktop-kernel:5.15.49-pr-704f10d9d090a85069f63d0cad4dc557a64e8cc7 AS ksrc
 
-FROM ubuntu:latest
+FROM ubuntu:20.04 AS bpftrace
 
 FROM golang:latest
 
@@ -11,7 +11,7 @@ RUN tar xf kernel-dev.tar && rm kernel-dev.tar
 RUN apt-get update
 RUN apt install -y kmod python3-bpfcc
 
-COPY hello_world.py /root
+#COPY src/hello_world.py /root
 
 RUN mkdir -p /site/ebpf
 # Use Alibaba Cloud mirror for ubuntu
@@ -21,13 +21,13 @@ RUN mkdir -p /site/ebpf
 #ENV PATH "$PATH:/usr/lib/llvm-10/bin"
 
 # Build/Install bpftrace
-RUN apt-get install -y bpftrace
+RUN apt-get install -y bpftrace bcc
 
 # Build/Install bcc
 
 #Build/Install golang
 
-RUN apt-get update && apt-get -y install wget vim gcc clang llvm
+RUN apt-get update && apt-get -y install lsb-release software-properties-common wget vim gcc clang llvm
 #RUN wget https://studygolang.com/dl/golang/go1.17.1.linux-amd64.tar.gz && \
 #    tar -C /usr/local -xvzf go1.17.1.linux-amd64.tar.gz && \
 #    rm go1.17.1.linux-amd64.tar.gz
@@ -46,6 +46,7 @@ RUN go env -w GO111MODULE=on #有""不用设置
 RUN apt-get install -y libelf-dev bpftool
 #RUN git clone https://github.com/libbpf/libbpf.git \
 #    && cd libbpf/src && mkdir build root && BUILD_STATIC_ONLY=y OBJDIR=build DESTDIR=root make install
+RUN mv /usr/src/linux-headers-5.15.49-linuxkit-pr /usr/src/linux-headers-5.15.49-linuxkit
 
 WORKDIR /site/ebpf
 CMD mount -t debugfs debugfs /sys/kernel/debug && /bin/bash
