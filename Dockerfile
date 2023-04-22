@@ -28,12 +28,14 @@ RUN apt-get install -y bpftrace bcc
 #Build/Install golang
 
 RUN apt-get update && apt-get -y install lsb-release software-properties-common wget vim gcc clang llvm
-#RUN wget https://studygolang.com/dl/golang/go1.17.1.linux-amd64.tar.gz && \
-#    tar -C /usr/local -xvzf go1.17.1.linux-amd64.tar.gz && \
-#    rm go1.17.1.linux-amd64.tar.gz
-#ENV PATH=$PATH:/usr/local/go/bin
 
 #RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
+
+RUN apt-get install -y libbpf-dev apt-file && apt-file update && apt-file list libbpf-dev
+#RUN apt-get install -y apt-file
+#RUN apt-file update
+#RUN apt-file list libbpf-dev
+
 
 #RUN apt-get -y install golang
 
